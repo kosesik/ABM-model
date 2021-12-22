@@ -1,0 +1,41 @@
+patches-own [value]
+
+turtles-own[status wealth]
+
+
+to setup
+  clear-all
+  create-turtles 1000 [
+    let status-indicator random 100
+    ifelse status-indicator < 80
+      [set status "poor"]
+      [set status "rich"]
+  
+    
+    ifelse status = "rich"
+      [set wealth (80 + random 20)]
+      [set wealth random 50]
+ 
+    
+    ifelse status = "rich"
+      [ set color red]
+      [ set color green]
+    
+    setxy random-xcor random-ycor
+    set size 1
+    set shape "person"
+  ]
+  
+  
+  
+  ask patches [
+  set value random 100
+    set pcolor (list (255 - value) (255 - value ) (255 - value ) )
+  set plabel value
+  ]  
+  
+  
+end
+
+
+sort
