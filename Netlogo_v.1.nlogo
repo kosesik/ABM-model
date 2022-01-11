@@ -36,9 +36,9 @@ create-riches round (number-of-turtles * percent-riches) [
   set heading 0
   setxy random-xcor random-ycor
   set color red
-  set vision 4 
+  set vision 4
   ]
-  
+
 create-poores round (number-of-turtles * (1 - percent-riches)) [
   set shape "person"
   set size 0.5
@@ -79,25 +79,27 @@ end
 
 
 to go
-    ask turtles
+  while [ticks < 100]
+  [ 
+  ask turtles
   [
 ;      set heading heading + rotate 30 30
       move
       set wealth wealth - 50 + ([value] of patch-here ) ;wealth minus cost of living plus income from patch divided by 6
   ]
-  
+
 ;  let patchset any? turtles-here
 ;  show patchset
   ask patches
   [
-  if any? turtles-here [  
+  if any? turtles-here [
   set value value - 5
       if value <= 0 [set value 0]
   patch-recolor
   ]
   ]
 update-plots
-tick
+    tick]
 end
 
 
@@ -109,7 +111,7 @@ end
 to move
   if ticks mod 5 = 0 [
   let patchset not any? other turtles-here
-  set patchset patches in-radius vision 
+  set patchset patches in-radius vision
 ;  ask patchset[set pcolor white]
 ;  ask patchset [print self]
   set patchset sort patchset
@@ -128,7 +130,7 @@ to move
 ;  show discounted-rate
   show discounted-value
 ;  foreach patchset [i -> show [value] of i]
-  
+
   let target-patch2 max discounted-value
   show target-patch2
   let target-position position max discounted-value discounted-value
@@ -138,10 +140,10 @@ to move
   show target-patch
   set targetpatch target-patch
   move-to targetpatch
-  
-  
+
+
   ]
-  
+
 end
 
 
@@ -150,5 +152,10 @@ to patch-recolor
     set pcolor green + value / 20
 end
 
-
-
+to save
+file-delete "data.txt"  
+file-open "data.txt"
+ file-print ticks
+  file-print [value] of patches 
+file-close  
+end
