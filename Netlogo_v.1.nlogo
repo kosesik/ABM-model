@@ -30,7 +30,7 @@ ask n-of
     set value 100
     set pcolor red
   ]
-create-riches round (number-of-turtles * percent-riches) [
+create-riches round (number-of-turtles * (percent-riches / 100)) [
   set shape "person"
   set size 0.5
   set heading 0
@@ -39,7 +39,7 @@ create-riches round (number-of-turtles * percent-riches) [
   set vision 4
   ]
 
-create-poores round (number-of-turtles * (1 - percent-riches)) [
+create-poores round (number-of-turtles * (1 - (percent-riches / 100))) [
   set shape "person"
   set size 0.5
   set heading 0
