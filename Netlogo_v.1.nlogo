@@ -18,10 +18,22 @@ turtles-own [
 ]
 
 to setup
-random-seed 123
-;resize-world -20 20 -20 20
 clear-all
 reset-ticks
+;resize-world -20 20 -20 20
+
+create--patches2
+create--turtles
+  
+end
+ 
+
+
+; CREATE PATCHES
+
+to create--patches1
+
+random-seed 123
 ask n-of
 ;  (0.001 * count patches)
   2
@@ -29,7 +41,76 @@ ask n-of
   [
     set value 100
     set pcolor red
+  ]  
+end  
+  
+  
+to create--patches2
+  
+ask n-of 5 patches
+  [
+  set value 100
+  ask n-of 20 other patches in-radius 5
+    [
+     set value random 10 + 70 
+    ]
   ]
+ask n-of 50 patches with [value = 0]
+  [
+  set value random 10 + 40
+  ]    
+ask patches with [value = 0]
+  [
+    set value random 10 + 10
+  ]  
+diffuse value 0.6
+diffuse value 0.6
+  
+  ask patches
+  [
+    patch-recolor
+  ]
+  
+end
+
+  
+to create--patches3
+  
+let rx1 random max-pxcor
+let ry1 random max-pycor
+
+let rx2 random max-pxcor
+let ry2 random max-pycor 
+
+ask patch rx1 ry1
+  [set value 100]
+ ask patch rx2 ry2
+  [set value 100]
+
+  ask patches with [value = 0] 
+  [
+  let rvalue1 max [value] of patches - distancexy rx1 ry1 * 2
+  let rvalue2 max [value] of patches - distancexy rx2 ry2 * 2
+    
+  ifelse rvalue1 > rvalue2 
+  [set value rvalue1]
+  [set value rvalue2]
+  ]
+  
+ask patches
+  [
+  patch-recolor
+  ] 
+
+
+  
+  
+end
+
+
+; CREATE TURTLES
+  
+to create--turtles
 create-riches round (number-of-turtles * (percent-riches / 100)) [
   set shape "person"
   set size 0.5
@@ -69,7 +150,7 @@ let distset [dist] of patches
     patch-recolor
   ]
 
-update-plots
+
 end
 
 
@@ -79,8 +160,8 @@ end
 
 
 to go
-  while [ticks < 100]
-  [ 
+  while [ticks < 400]
+  [
   ask turtles
   [
 ;      set heading heading + rotate 30 30
@@ -149,13 +230,14 @@ end
 
 
 to patch-recolor
-    set pcolor green + value / 20
+;    set pcolor green + value / 20
+    set pcolor scale-color green value 0 100
 end
 
 to save
-file-delete "data.txt"  
+file-delete "data.txt"
 file-open "data.txt"
  file-print ticks
-  file-print [value] of patches 
-file-close  
+  file-print [value] of patches
+file-close
 end
